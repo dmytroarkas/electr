@@ -1,0 +1,80 @@
+version: "3.7"
+services:
+  php:
+    container_name: php
+    ports:
+      - "80:80"
+    build:
+      args:
+        uname: ${USER_NAME}
+        uid: ${USER_UID}
+        gid: ${USER_GID}
+      context: ${PHP_DIR}
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ${PROJECT_DIR}:/var/www
+      - ${PHP_DIR}/php.ini:/usr/local/etc/php/php.ini
+      - ${PHP_DIR}/.composer:/home/${USER_NAME}/.composer
+      - ${APACHE_DIR}/sites-enabled:/etc/apache2/sites-enabled
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+      IP_GATEWAY: ${IP_GATEWAY}
+    networks:
+      net:
+        ipv4_address: ${IP_PHP}
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${MYSQL_DB_DIR}:/var/lib/mysql
+    networks:
+      net:
+        ipv4_address: ${IP_MYSQL}
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+    networks:
+      net:
+        ipv4_address: ${IP_PHPMYADMIN}
+
+  mailcatcher:
+    container_name: mailcatcher
+    restart: unless-stopped
+    image: yappabe/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+
+#  postgres:
+#    container_name: postgres
+#    image: postgres:${POSTGRES_VERSION}-alpine
+#    environment:
+#      POSTGRES_DB: ${POSTGRES_DB}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#      POSTGRES_USER: ${POSTGRES_USER}
+#    volumes:
+#      - ${POSTGRES_DB_DIR}:/var/lib/postgresql/data:rw
+#    networks:
+#      net:
+#        ipv4_address: ${IP_POSTGRES}
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${IP_SUBNET}
+          gateway: ${IP_GATEWAY}

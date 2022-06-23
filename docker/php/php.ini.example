@@ -1,0 +1,5 @@
+xdebug.mode=debug
+xdebug.log="/var/www/xdebug.log"
+xdebug.start_with_request=yes
+xdebug.client_host=${IP_GATEWAY}
+date.timezone=Europe/Kiev

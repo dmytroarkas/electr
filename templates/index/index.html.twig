@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{ path('app_index_run') }}" class="btn btn-primary">Запустить</a>
+    </div>
+    <div style="margin-top: 30px">
+        {% for file in files %}
+            <p><a href="{{ asset('data/'~file) }}" target="_blank">{{ file }}</a></p>
+        {% endfor %}
+    </div>
+{% endblock %}

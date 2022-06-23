@@ -1,0 +1,55 @@
+FROM php:8.1-apache
+
+ARG uname
+ARG gid
+ARG uid
+RUN groupadd -g $gid $uname && useradd -u $uid -g $gid --create-home -s /bin/bash $uname
+
+RUN a2enmod rewrite
+RUN apt update
+RUN apt install -y nano
+RUN apt install -y git
+RUN apt install -y mc
+RUN apt install -y libfreetype6-dev
+RUN apt install -y libjpeg62-turbo-dev
+RUN apt install -y libmcrypt-dev
+RUN apt install -y libpng-dev
+RUN apt install -y wget
+RUN apt install -y gnupg
+RUN apt install -y libicu-dev
+RUN apt install -y libxml2-dev
+RUN apt install -y libzip-dev
+RUN apt install -y gcc
+RUN apt install -y make
+RUN apt install -y autoconf
+RUN apt install -y libc-dev
+RUN apt install -y pkg-config
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+RUN pecl install apcu
+RUN docker-php-ext-enable apcu
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install iconv
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install pdo
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install soap
+RUN docker-php-ext-install exif
+RUN docker-php-ext-enable exif
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+#Postgres
+#RUN apt install -y libpq-dev
+#RUN docker-php-ext-install pdo_pgsql
+#RUN docker-php-ext-install pgsql
+
+#Mysql
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mysqli
+
+USER $uname
+WORKDIR /var/www
