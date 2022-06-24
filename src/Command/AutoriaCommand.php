@@ -57,7 +57,7 @@ class AutoriaCommand extends Command
     private function parseCarsList()
     {
         $pageList = file_get_contents(
-            "https://auto.ria.com/uk/search/?indexName=auto&year[0].gte=2011&year[0].lte=2022&brand.id[0]=55&model.id[0]=36565&country.import.usa.not=-1&region.id[0]=10&city.id[0]=10&price.currency=1&sort[0].order=dates.created.desc&abroad.not=0&custom.not=1&size=10&scrollToAuto=32774984&page=" .
+            "https://auto.ria.com/uk/search/?indexName=auto&year[0].gte=2013&year[0].lte=2022&brand.id[0]=55&model.id[0]=36565&country.import.usa.not=-1&price.currency=1&sort[0].order=dates.created.desc&abroad.not=0&custom.not=1&size=20&page=" .
                 $this->page
         );
         preg_match_all(
