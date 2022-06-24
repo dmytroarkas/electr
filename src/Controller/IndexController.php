@@ -31,13 +31,13 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/run")
+     * @Route("/parse/{name}")
      */
-    public function run(KernelInterface $kernel): Response
+    public function parse(KernelInterface $kernel, string $name): Response
     {
         $application = new Application($kernel);
         $application->setAutoExit(false);
-        $input = new ArrayInput(["command" => "app:autoria"]);
+        $input = new ArrayInput(["command" => "app:$name"]);
         $output = new NullOutput();
         $application->run($input, $output);
 

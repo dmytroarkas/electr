@@ -37,6 +37,7 @@ class AutoriaCommand extends Command
             file_put_contents(
                 $this->kernel->getProjectDir() .
                     "/public/data/" .
+                    "autoria_" .
                     date("Y-m-d_H-i-s") .
                     ".json",
                 json_encode($this->result, JSON_UNESCAPED_UNICODE)

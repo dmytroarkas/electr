@@ -4,7 +4,7 @@
 
 {% block body %}
     <div>
-        <a href="{{ path('app_index_run') }}" class="btn btn-primary">Запустить</a>
+        <a href="{{ path('app_index_parse', {name: "autoria"}) }}" class="btn btn-primary">Парсинг auto.ria.com</a>
     </div>
     <div style="margin-top: 30px">
         {% for file in files %}
